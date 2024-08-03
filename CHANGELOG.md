@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/feeph/pypackage-template/compare/v0.1.3...v0.2.0) (2024-08-03)
+
+
+### Features
+
+* provide a script for installing the git hooks ([#10](https://github.com/feeph/pypackage-template/issues/10)) ([6b5f1f0](https://github.com/feeph/pypackage-template/commit/6b5f1f05775c181217bd8c3a9b1967bdeef14f39))
+
 ## [0.1.3](https://github.com/feeph/pypackage-template/compare/v0.1.2...v0.1.3) (2024-07-28)
 
 
