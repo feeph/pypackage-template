@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""
+example CLI application
+(please feel free to adjust or delete as needed)
+
+run from repository:
+  uv run example-cli
+
+run from installed package:
+  example-cli
+"""
+
+import argparse
+import logging
+
+from {{package_namespace}}.{{package_name}} import VERSIONSTRING, do_magic
+
+
+LH = logging.getLogger("main")
+
+
+# pyproject.toml defines the entry point:
+# ----------------------------------------------------
+# [project.scripts]
+# example-cli = "{{ package_namespace }}.{{ package_name }}:main"
+# -----------------------------------------------------
+def main():
+    """
+    entrypoint for our example command line application
+    """
+    # configure a nice format for command line logging -> 'I: <message>'
+    logging.basicConfig(format='%(levelname).1s: %(message)s', level=logging.INFO)
+
+    LH.info("Starting CLI.")
+
+    parser = argparse.ArgumentParser(description='report active Auth0 users', allow_abbrev=False)
+    # named arguments
+    parser.add_argument('-v', '--verbose', action='store_true', help="increase log output")
+    parser.add_argument('--version', action='version', version=f"%(prog)s v{VERSIONSTRING}")
+    parser.add_argument('values', metavar='VALUE', nargs='+', help="one or more values")
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        LH.info("(Why don't you try the '-v' option?)")
+
+    count = do_magic(args.values)
+    print("count:", count)
+
+
+if __name__ == '__main__':
+    main()

@@ -79,6 +79,32 @@ Please submit bugs and feature requests on the [issue tracker](https://github.co
 
 Contributions are always welcome.
 
+## Development and Testing
+
+prepare datafile `my_defaults.yaml`
+```YAML
+---
+#
+# copier default answer file
+#
+author_name: <your name>
+author_email: <your email>
+
+package_name: package
+package_namespace: namespace
+package_description: my wonderful description
+```
+
+initialize a new package
+```bash
+copier copy --defaults --trust --no-cleanup --data-file my_defaults.yaml --vcs-ref=HEAD . /tmp/copier-test
+cd /tmp/copier-test
+git init .
+pre-commit install
+uv sync
+uv run pytest
+```
+
 ## How to contribute
 
 Please refer to the [Contribution guide](docs/CONTRIBUTING.md).

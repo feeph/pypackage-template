@@ -1,0 +1,14 @@
+version: "0.2"
+language: en-GB,en-US
+words:
+  - autopep
+  - booleaness
+  - commitizen
+  - coverallsapp
+  - isort
+  - mypy
+  - pavelzw
+  - pylint
+  - pyproject
+  - pytest
+  - PYTHONPATH
