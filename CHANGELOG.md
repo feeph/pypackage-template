@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/feeph/pypackage-template/compare/v0.4.1...v0.5.0) (2025-03-18)
+
+
+### Features
+
+* refactor the template to use 'uv' instead of 'pdm' and improve it ([#26](https://github.com/feeph/pypackage-template/issues/26)) ([2651399](https://github.com/feeph/pypackage-template/commit/26513992cdfca2bfd5d07fd3d7e4ae9b0fdf69f5))
+
+
+### Documentation
+
+* update README.md ([#28](https://github.com/feeph/pypackage-template/issues/28)) ([d23351d](https://github.com/feeph/pypackage-template/commit/d23351d7630708bda6304c444cabb522eedce47f))
+
 ## [0.4.1](https://github.com/feeph/pypackage-template/compare/v0.4.0...v0.4.1) (2024-08-22)
 
 
