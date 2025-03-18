@@ -2,23 +2,58 @@
 
 ## quickstart
 
-### one-time setup (pipx)
+### one-time setup
 
-systemwide (as superuser):
+Install `uv`:
 
-- install pipx
+_follow the instructions on
+https://docs.astral.sh/uv/getting-started/installation/_
 
-as user:
+Install development tools:
 
 ```SHELL
-pipx install pre-commit
+uv tool install copier
+uv tool install pre-commit
 ```
 
 ### repository setup
 
-This needs to be done for every cloned repository:
+```SHELL
+pre-commit install
+```
+
+### test template changes
+
+prepare data file `~/test-defaults.yaml`:
+
+```
+---
+#
+# copier default answer file
+#
+author_name: <your name>
+author_email: <your email>
+
+repository_owner: <github username or organization>
+package_name: mypackage
+package_namespace: mynamespace
+package_description: my wonderful description
+```
+
+initialize a template
 
 ```SHELL
-# install pre-commit hooks
-scripts/install_git-hooks
+copier copy --defaults --trust --no-cleanup --data-file=~/test-defaults.yaml --vcs-ref=HEAD . /tmp/test-template_`date +%s`
 ```
+
+## Process and conventions
+
+TODO Please describe your team-specific processes and conventions.
+
+It is helpful to describe:
+
+ - how to request contributor permissions
+ - what needs to be done to prepare a pull request
+ - which standards to follow
+ - which tests must be run
+ - who is going to perform the code review

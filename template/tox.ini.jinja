@@ -1,81 +1,46 @@
-;
 ; tox - automated and standardized testing in Python
-; https://tox.wiki/en/latest/user_guide.html
+; <https://tox.wiki/en/latest/user_guide.html>
 ;
-
-; install multiple Python environments using pyenv
-; ------------------------------------------------
+; requires a uv-enabled tox environment:
 ;
-; install pyenv itself
-;   curl https://pyenv.run | bash
-;   ...and follow the provided instructions
-; install build dependencies
-;   https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-; install Python versions
-;   pyenv install 3.9
-;   pyenv install 3.10
-;   pyenv install 3.11
-; install tox & virtualenv-penv
-;   pipx install tox
-;   pipx inject tox virtualenv-pyenv
+;   `uv tool install tox --with tox-uv`
 ;
-; optimize Python performance:
-; https://github.com/pyenv/pyenv/wiki#how-to-build-cpython-for-maximum-performance
 
 [tox]
 requires =
-    tox >=4
+    tox >= 4
 env_list =
     lint
     type
     py{310,311,312}
 
-; pytest & coverage
-; https://pytest-cov.readthedocs.io/en/latest/tox.html
-[coverage:run]
-branch = True
-
-[coverage:report]
-fail_under = 90
-
-[coverage:html]
-directory = tests/coverage_report/
-
 ; https://github.com/PyCQA/flake8
 [flake8]
-max-line-length = 250
+max-line-length = {{ max_line_length }}
 extend-ignore   = E221,E241
+per-file-ignores =
+    # ignore unused imports in '__init__.py' files
+    {{ package_namespace }}/*/__init__.py:F401
 
 [testenv:lint]
 description = lint code (flake8)
-deps =
-    --global-option="$(python-config --includes)" -r requirements.txt
-    --global-option="$(python-config --includes)" -r requirements-dev.txt
 commands =
-    flake8 {posargs:{{ package_namespace }} examples/ tests/}
+    uv run --active flake8 {posargs:{{ package_namespace }} tests/}
 
 [testenv:type]
 description = check type hints
-deps =
-    --global-option="$(python-config --includes)" -r requirements.txt
-    --global-option="$(python-config --includes)" -r requirements-dev.txt
 commands =
-    mypy -p {{ package_namespace }}.{{ package_name }}
-    mypy {posargs:examples/ tests/}
+    uv run --active mypy -p {{ package_namespace }}.{{ package_name }}
+    uv run --active mypy {posargs:tests/}
 
 ; code is incompatible with Python 3.9 due to type hints
 ; (it could be fixed by changing the type hints but we won't)
 
 [testenv]
 description = install pytest in a virtual environment and invoke it on the tests folder
-set_env =
-  VIRTUALENV_DISCOVERY = pyenv
-deps =
-    --global-option="$(python-config --includes)" -r requirements.txt
-    --global-option="$(python-config --includes)" -r requirements-dev.txt
 # do not generate a coverage report from tox
 #   if we would the files would be relative to the tox virtual environments
 #   and prefixed with '.tox/py*/lib/python*/site-packages/' - which makes
 #   them interesting to look at but useless for consumption by other tools
 commands =
-    pytest --no-cov {posargs: tests/}
+    uv run --active pytest --no-cov {posargs:tests/}

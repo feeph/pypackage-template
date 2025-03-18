@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
+
+import unittest
+
+from {{ package_namespace }}.{{ package_name }} import do_magic
+
+
+class TestExample(unittest.TestCase):
+
+    def test_do_magic_single_value(self):
+        values = ["one"]
+        # -----------------------------------------------------------------
+        computed = do_magic(values)
+        expected = 1
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
+
+    def test_do_magic_multiple_values(self):
+        values = ["one", "two"]
+        # -----------------------------------------------------------------
+        computed = do_magic(values)
+        expected = 2
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)

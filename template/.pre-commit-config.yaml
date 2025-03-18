@@ -3,15 +3,29 @@
 # documentation can be found at https://pre-commit.com/
 #
 # perform once after cloning the repository:
-#  scripts/prepare_repository
+#  pre-commit install
 #
 # if you want to trigger pre-commit manually:
 #  pre-commit run
 #  pre-commit run --all-files
 #
+
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+  - post-commit
+  - pre-push
+
+default_stages:
+  - pre-commit
+  - pre-push
+
 repos:
+  # -----------------------------------------------------------------------
+  # stage: pre-commit and pre-push
+  # -----------------------------------------------------------------------
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v5.0.0
     hooks:
       - id: check-merge-conflict
         args: [--assume-in-merge]
@@ -22,27 +36,45 @@ repos:
       - id: trailing-whitespace
   # https://pycqa.github.io/isort/docs/configuration/pre-commit.html
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort
   # https://pypi.org/project/autopep8/
   - repo: https://github.com/hhatto/autopep8
-    rev: v2.2.0
+    rev: v2.3.2
     hooks:
       - id: autopep8
-  # https://www.conventionalcommits.org/
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v3.2.0
-    hooks:
-      - id: conventional-pre-commit
-        stages:
-         - commit-msg
-        args: []
   # https://github.com/PyCQA/flake8
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+    rev: 7.1.2
     hooks:
       - id: flake8
+  # https://pylint.readthedocs.io/en/stable/index.html
+  - repo: local
+    hooks:
+      - id: pylint
+        name: scan for broken code
+        entry: uv run pylint
+        language: system
+        types:
+          - python
+        require_serial: true
+        args:
+          # special configuration for commit validation:
+          #  - ignore all non-breaking issues
+          #  - require all breaking issues to be fixed
+          - "--score=n"
+          - "--disable=C,W,R"
+          - "--fail-under=10"
+  # -----------------------------------------------------------------------
+  # stage: commit-msg
+  # -----------------------------------------------------------------------
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.2.2
+    hooks:
+      - id: commitizen
+  # -----------------------------------------------------------------------
+  # stage: post-commit
   # -----------------------------------------------------------------------
   # !! post-commit can't prevent the commit from happening !!
   #
@@ -62,6 +94,8 @@ repos:
         entry: git
         args: [ "verify-commit", "HEAD" ]
   # -----------------------------------------------------------------------
+  # stage: pre-push
+  # -----------------------------------------------------------------------
   - repo: local
     hooks:
       - id: signed-commits
@@ -71,3 +105,9 @@ repos:
         args: [ "$PRE_COMMIT_FROM_REF", "$PRE_COMMIT_TO_REF" ]
         stages:
             - pre-push
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.2.2
+    hooks:
+      - id: commitizen-branch
+        stages:
+          - pre-push

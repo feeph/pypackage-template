@@ -7,21 +7,21 @@ set -e
 set -u
 
 # code quality
-pdm run flake8 {{ package_namespace }}/ examples/ tests/
+uv run flake8 {{ package_namespace }}/ tests/
 
 # code style
 # (pylint is configured to accept "less than perfect")
-pdm run pylint {{ package_namespace }}/ examples/ tests/
+uv run pylint {{ package_namespace }}/ tests/
 {% if is_typed %}
 
 # validate type hints (package)
-pdm run mypy -p {{ package_namespace }}.{{ package_name }}
+uv run mypy -p {{ package_namespace }}.{{ package_name }}
 
 # validate type hints (extra files)
 # (we need to be careful since there might be no files)
-FILES=`find examples/ tests/ -name '*.py'`
+FILES=`find tests/ -name '*.py'`
 if [[ -n $FILES ]] ; then
-    pdm run mypy $FILES
+    uv run mypy $FILES
 fi
 {% endif %}
 
@@ -35,12 +35,12 @@ fi
 generate_lcov() {
     mkdir -p coverage
     # generate coverage report in lcov and HTML format
-    pdm run coverage-lcov --output_file_path=coverage/lcov.info
-    pdm run coverage html
+    uv run coverage-lcov --output_file_path=coverage/lcov.info
+    uv run coverage html
 }
 
 trap generate_lcov EXIT
-pdm run pytest --cov={{ package_namespace }}.{{ package_name }} --cov-report=term-missing --no-header --quiet tests/
+uv run pytest --cov={{ package_namespace }}.{{ package_name }} --cov-report=term-missing --no-header --quiet tests/
 
 tox
 

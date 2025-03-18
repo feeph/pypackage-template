@@ -9,10 +9,9 @@ name: verify pull request
 on:
   pull_request:
 
-# our tox configuration leverages pyenv to test on multiple Python versions.
-# It is unclear if we can leverage actions/setup-python@v4 to do the same.
+# Our tox configuration leverages uv to test on multiple Python versions.
 #
-# Even if it's possible it may be better to keep the workflows separate:
+# It's possible to run tox-with-venv but we decided to keep the workflows separate.
 #  - using a matrix strategy gives us a direct feedback within GHA which
 #    specific Python version failed to validate without looking at console
 #  - using a matrix strategy enables parallel execution
@@ -29,45 +28,48 @@ jobs:
     name: lint the code
     runs-on: ubuntu-latest
     steps:
+      # -------------------------------------------------------------------
+      # prepare
+      # -------------------------------------------------------------------
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: install uv
+        uses: astral-sh/setup-uv@v5
       - name: identify changed files
-        uses: tj-actions/changed-files@v44
         id: changed-files
+        uses: tj-actions/changed-files@v46
         with:
           files_yaml: |
+            branch:
+              - "**"
             library:
               - {{ package_namespace }}/**.py
-            contrib:
+            scripts:
               - examples/**.py
               - test/**.py
-      - name: configure Python (using PDM)
-        uses: pdm-project/setup-pdm@v4
-        with:
-          python-version-file: pyproject.toml
-      - name: install dependencies
-        run: |
-          pdm install
-      - name: lint code (flake8)
+      # -------------------------------------------------------------------
+      # validate
+      # -------------------------------------------------------------------
+      # The GitHub Action 'pre-commit/action' uses '--all-files' and always
+      # check against all files in the repository, even if the pull request
+      # does not touch them. We don't want that. Review modified files only.
+      - name: re-run pre-commit hooks
         env:
-          LIBRARY_FILES: ${{ "{{" }} steps.changed-files.outputs.library_all_changed_files {{ "}}" }}
-          CONTRIB_FILES: ${{ "{{" }} steps.changed-files.outputs.contrib_all_changed_files {{ "}}" }}
+          CHANGED_FILES: ${{ "{{" }} steps.changed-files.outputs.branch_all_changed_files {{ "}}" }}
         run: |
-          if [[ -n $LIBRARY_FILES ]] || [[ -n $CONTRIB_FILES ]]  ; then
-            # the GitHub editor is 127 chars wide
-            pdm run flake8 --max-line-length=127 --show-source --statistics $LIBRARY_FILES $CONTRIB_FILES
-          fi
+          uv tool install pre-commit
+          pre-commit run --show-diff-on-failure --color=always --hook-stage pre-push --files $CHANGED_FILES
       {% if is_typed %}
-      - name: lint code (mypy)
+      - name: run static type checks (mypy)
         env:
-          CONTRIB_FILES: ${{ "{{" }} steps.changed-files.outputs.contrib_all_changed_files {{ "}}" }}
+          CHANGED_FILES: ${{ "{{" }} steps.changed-files.outputs.scripts_all_changed_files {{ "}}" }}
+        # since this is a namespace package we must instruct mypy to scan
+        # the code as a namespace package; it won't work if we scan files
         run: |
-          # since this is a namespace package we must instruct mypy to scan
-          # the code as a namespace package; it won't work if we scan files
-          pdm run mypy -p {{ package_namespace }}.{{ package_name }}
-          # example scripts and tests can be scanned as files
-          if [[ -n $CONTRIB_FILES ]] ; then
-            pdm run mypy $CONTRIB_FILES
+          uv run mypy -p {{ package_namespace }}.{{ package_name }}
+          # examples and tests can be scanned as files
+          if [[ -n $CHANGED_FILES ]] ; then
+            uv run mypy $CHANGED_FILES
           fi
       {% endif %}
   test:
@@ -84,14 +86,14 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: configure Python ${{ "{{" }} matrix.python-version {{ "}}" }}
-        uses: actions/setup-python@v5
+      - name: install uv ${{ "{{" }} matrix.python-version {{ "}}" }}
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ "{{" }} matrix.python-version {{ "}}" }}
       - name: install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install pytest pytest-md pytest-emoji
+          uv sync
+          uv pip install pytest pytest-md pytest-emoji
       # https://github.com/marketplace/actions/run-pytest
       - name: perform unit tests (Python ${{ "{{" }} matrix.python-version {{ "}}" }})
         env:

@@ -18,19 +18,20 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: configure Python (using PDM)
-        uses: pdm-project/setup-pdm@v4
+      - name: install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version-file: pyproject.toml
       - name: install dependencies
         run: |
-          pdm install
+          uv sync
+      # https://coverage.readthedocs.io/en/latest/
       - name: generate coverage report
         run: |
-          pdm run coverage run --source={{ package_namespace }}.{{ package_name }} -m pytest tests/
+          uv run coverage run --source={{ package_namespace }}.{{ package_name }} -m pytest tests/
           # coveralls recognizes the presence of .coverage but claims there
           # is nothing to report; creating a report in lcov format fixes that
-          mkdir -p coverage
-          pdm run coverage-lcov --output_file_path=coverage/lcov.info
+          mkdir -p cover
+          uv run coverage-lcov --output_file_path=cover/lcov.info
       - name: coveralls action
         uses: coverallsapp/github-action@v2

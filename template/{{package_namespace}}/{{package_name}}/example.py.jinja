@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""
+example code
+(please feel free to adjust or delete as needed)
+"""
+
+# standard imports
+import logging
+
+# extra imports (make sure to `uv add <package>`!), e.g.:
+# import requests
+
+LH = logging.getLogger("{{package_name}}")
+
+
+{% if is_typed %}
+def do_magic(values: list[str]) -> int:
+{% else %}
+def do_magic(values):
+{% endif %}
+    """
+    this function does something magical
+
+   :param list[str] values: The provided input values.
+   :return: the number of values
+    """
+    LH.info("[%s] Logging something.", __name__)
+    LH.debug("[%s] Values: %s", __name__, values)
+    for value in values:
+        LH.info(" - '%s'", value)
+    return len(values)

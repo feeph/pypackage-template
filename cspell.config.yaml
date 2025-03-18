@@ -1,0 +1,12 @@
+version: "0.2"
+language: en-GB
+words:
+  - cleanup
+  - CODEOWNERS
+  - commitizen
+  - envops
+  - issuetracker
+  - Jinja
+  - lstrip
+  - pyproject
+  - pytest

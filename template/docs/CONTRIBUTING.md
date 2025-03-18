@@ -4,43 +4,44 @@
 
 ### one-time setup
 
-__system-wide__
+Install `uv`:
 
-- __install pipx__
-- __install build dependencies__ for pyenv
-  https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+_follow the instructions on
+https://docs.astral.sh/uv/getting-started/installation/_
 
-__user-specific__
+Install development tools:
 
 ```SHELL
-# install dev tools
-pipx install pdm pre-commit tox
-pipx inject pdm pdm-autoexport
-pipx inject tox virtualenv-pyenv
+uv tool install pre-commit
+uv tool install tox --with tox-uv
+```
 
-# OS-independent Python versions
-curl https://pyenv.run | bash
-pyenv install 3.10
-pyenv install 3.11
-pyenv install 3.12
+Verify installation by executing `tox --version`. The output should look like this:
+
+```
+ROOT: No tox.ini or setup.cfg or pyproject.toml or tox.toml found, assuming empty tox.ini at /home/thomas/github/pypackage-template
+4.24.2 from /home/thomas/.local/share/uv/tools/tox/lib/python3.12/site-packages/tox/__init__.py
+registered plugins:
+    tox-uv-1.25.0 at /home/thomas/.local/share/uv/tools/tox/lib/python3.12/site-packages/tox_uv/plugin.py with uv==0.6.8
 ```
 
 ### repository setup
 
 ```SHELL
-# install pre-commit hooks
-for hook_type in pre-commit commit-msg post-commit pre-push ; do
-    pre-commit install --allow-missing-config --hook-type $hook_type
-done
+pre-commit install
+uv sync
+```
 
-# install package dependencies
-pdm install
+### execute code
+
+```SHELL
+uv run path/to/code.py
 ```
 
 ### perform unit tests:
 
 ```SHELL
-pdm run pytest
+uv run pytest
 ```
 
 ### perform compatibility tests:
@@ -49,9 +50,14 @@ pdm run pytest
 tox
 ```
 
-### use the demo script
+## Process and conventions
 
-```SHELL
-pdm run examples/demonstrator.py
-pdm run examples/demonstrator.py -v -i 2
-```
+TODO Please describe your team-specific processes and conventions.
+
+It is helpful to describe:
+
+ - how to request contributor permissions
+ - what needs to be done to prepare a pull request
+ - which standards to follow
+ - which tests must be run
+ - who is going to perform the code review
