@@ -8,8 +8,8 @@ copier template for Python-based libraries / packages
 
 - opinionated
 - use namespace packages to avoid naming collisions
-- use pdm, pyenv & tox for all our development needs
-- use dependabot, pdm, pre-commit & release-please for all our packaging needs
+- use uv & tox for all our development needs
+- use dependabot, pdm-backend, pre-commit & release-please for all our packaging needs
 
 __namespaces__
 
@@ -35,7 +35,7 @@ copier copy -a .copier/answers_pypackage.yaml -w https://github.com/feeph/pypack
 
 cd $repo_name
 scripts/prepare_repository
-pdm run pytest
+uv run pytest
 ```
 
 ### injecting into an already existing codebase
@@ -58,7 +58,7 @@ You probably need to move some files around.
 
 Please resist the temptation to move the code into a 'src/' directory.
  - `mypy` won't like that and complain the names don't match.
- - `pdm` will fail to package the code properly.
+ - `uv` will fail to package the code properly.
 
 This is a sideeffect of using a namespace package. We must not create an
 `__init__.py` file in the top-level directory and that confuses some tools.
@@ -78,32 +78,6 @@ scripts/update_copier-templates
 Please submit bugs and feature requests on the [issue tracker](https://github.com/feeph/pypackage-template/issues).
 
 Contributions are always welcome.
-
-## Development and Testing
-
-prepare datafile `my_defaults.yaml`
-```YAML
----
-#
-# copier default answer file
-#
-author_name: <your name>
-author_email: <your email>
-
-package_name: package
-package_namespace: namespace
-package_description: my wonderful description
-```
-
-initialize a new package
-```bash
-copier copy --defaults --trust --no-cleanup --data-file my_defaults.yaml --vcs-ref=HEAD . /tmp/copier-test
-cd /tmp/copier-test
-git init .
-pre-commit install
-uv sync
-uv run pytest
-```
 
 ## How to contribute
 
