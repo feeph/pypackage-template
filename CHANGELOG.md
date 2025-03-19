@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/feeph/pypackage-template/compare/v0.6.0...v0.6.1) (2025-03-19)
+
+
+### Bug Fixes
+
+* suppress uv's progress bars in GitHub Actions ([#38](https://github.com/feeph/pypackage-template/issues/38)) ([4dc72ae](https://github.com/feeph/pypackage-template/commit/4dc72ae7b52ffbcac1a05f58d69f4a0e355e6c36))
+
 ## [0.6.0](https://github.com/feeph/pypackage-template/compare/v0.5.3...v0.6.0) (2025-03-19)
 
 
