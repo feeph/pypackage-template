@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/feeph/pypackage-template/compare/v0.5.2...v0.5.3) (2025-03-19)
+
+
+### Bug Fixes
+
+* add missing curly braces to template ([#33](https://github.com/feeph/pypackage-template/issues/33)) ([4f2acab](https://github.com/feeph/pypackage-template/commit/4f2acabbbbda48465e77743a1f80d789f9e859b1))
+
 ## [0.5.2](https://github.com/feeph/pypackage-template/compare/v0.5.1...v0.5.2) (2025-03-19)
 
 
