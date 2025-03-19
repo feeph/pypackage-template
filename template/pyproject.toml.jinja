@@ -13,8 +13,8 @@
 #   - use `uv install` to install dependencies
 
 # usage:
-#   - use `pdm run <pythonfile>` to execute code
-#   - use `pdm run pytest` to perform unit tests
+#   - use `uv run <pythonfile>` to execute code
+#   - use `uv run pytest` to perform unit tests
 
 # line lengths:
 #   - Excessive line lengths aren't good. But rather then automatically
@@ -33,7 +33,6 @@ dependencies = [
 ]
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
-repository = "{{ repository_url }}/"
 keywords = [
 ]
 classifiers = [
@@ -44,6 +43,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
+
+[project.urls]
+changelog = "{repository_url}/CHANGELOG.md"
+documentation = "https://github.com/{{repository_owner}}/{{repository_name}}/"
+homepage = "https://github.com/{{repository_owner}}/{{repository_name}}/"
+issues = "https://github.com/{{repository_owner}}/{{repository_name}}/issues/"
+repository = "{repository_url}/"
 
 [project.scripts]
 example-cli = "{{ package_namespace }}.{{ package_name }}.cli:main"
@@ -69,7 +75,6 @@ source-includes = ["tests/"]
 #  - https://pypi.org/project/autopep8/
 # -------------------------------------------------------------------------
 
-# https://pypi.org/project/autopep8/
 [tool.autopep8]
 max_line_length = {{ max_line_length }}
 ignore          = [
@@ -80,11 +85,10 @@ in-place = true
 
 # -------------------------------------------------------------------------
 # isort
+#  - https://github.com/PyCQA/isort
 #  - https://pycqa.github.io/isort/docs/configuration/config_files
 # -------------------------------------------------------------------------
 
-# https://github.com/PyCQA/isort
-# https://pycqa.github.io/isort/
 [tool.isort]
 # use the black profile but override "multi_line_output"
 profile           = "black"
