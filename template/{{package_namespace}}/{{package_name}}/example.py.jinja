@@ -10,7 +10,7 @@ import logging
 # extra imports (make sure to `uv add <package>`!), e.g.:
 # import requests
 
-LH = logging.getLogger("{{package_name}}")
+LH = logging.getLogger("{{ package_namespace }}.{{ package_name }}")
 
 
 {% if is_typed %}
