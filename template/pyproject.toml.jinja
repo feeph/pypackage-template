@@ -45,11 +45,11 @@ classifiers = [
 ]
 
 [project.urls]
-changelog = "{repository_url}/CHANGELOG.md"
+changelog = "{{repository_url}}/CHANGELOG.md"
 documentation = "https://github.com/{{repository_owner}}/{{repository_name}}/"
 homepage = "https://github.com/{{repository_owner}}/{{repository_name}}/"
 issues = "https://github.com/{{repository_owner}}/{{repository_name}}/issues/"
-repository = "{repository_url}/"
+repository = "{{repository_url}}/"
 
 [project.scripts]
 example-cli = "{{ package_namespace }}.{{ package_name }}.cli:main"
