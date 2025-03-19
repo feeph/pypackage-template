@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/feeph/pypackage-template/compare/v0.6.1...v0.6.2) (2025-03-19)
+
+
+### Bug Fixes
+
+* prevent pylint from scanning the templates ([#40](https://github.com/feeph/pypackage-template/issues/40)) ([be367f4](https://github.com/feeph/pypackage-template/commit/be367f46896c96a281341aa711cd630e7ed98812))
+
 ## [0.6.1](https://github.com/feeph/pypackage-template/compare/v0.6.0...v0.6.1) (2025-03-19)
 
 
