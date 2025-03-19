@@ -8,8 +8,8 @@ copier template for Python-based libraries / packages
 
 - opinionated
 - use namespace packages to avoid naming collisions
-- use uv & tox for all our development needs
-- use dependabot, pdm-backend, pre-commit & release-please for all our packaging needs
+- use pre-commit, tox & uv for development and testing
+- use dependabot, pdm-backend & release-please for packaging and releases
 
 __namespaces__
 
