@@ -19,58 +19,67 @@ __namespaces__
 
 ## Usage
 
-### initializing an empty repository
+It is possible inject the template into an existing repository or update
+a templated repository with a newer template version.
 
-We are going to create the examples files using 'pypackage-seeddata' and
-then inject the template on top of it. The order is important because it
-ensures we use the same values as the seeddata and the final answer file
-will be created by 'pypackage-template' and thus contains all variables.
+### inject the template into a repository
+
+__Warning:__ Depending on the current configuration and repository layout
+this may wreck the repository. It is recommended to initialize the
+template into an empty directory. Afterwards copy the files from the
+existing repository into the new location and adjust them as needed.
+
+__option a)__ automatically run post-initialization commands
 
 ```SHELL
-repo_name="libmagic-python"
+# 'git clone <...>' or 'mkdir <...>'
+cd <repodir>
 
-git clone git@github.com:feeph/${repo_name}.git
-copier copy https://github.com/feeph/pypackage-seeddata $repo_name
-copier copy -a .copier/answers_pypackage.yaml -w https://github.com/feeph/pypackage-template $repo_name
+# initialize and post-init
+copier copy --trust https://github.com/feeph/pypackage-template.git .
 
-cd $repo_name
-scripts/prepare_repository
+# start coding
 uv run pytest
 ```
 
-### injecting into an already existing codebase
-
-We either have an already existing codebase or we're uninterested in the
-example files. We will not use the seed data, only the template.
+__option b)__ manually complete the initialization
 
 ```SHELL
-repo_name="libsorcery-python"
+# 'git clone <...>' or 'mkdir <...>'
+cd <repodir>
 
-git clone git@github.com:feeph/${repo_name}.git
-copier copy https://github.com/feeph/pypackage-template $repo_name
+# initialize
+copier copy https://github.com/feeph/pypackage-template.git .
 
-cd $repo_name
-# <adjust files and commit>
+# post-init
+pre-commit install
+uv sync
+
+# start coding
+uv run pytest
 ```
 
-__Adjust the directory layout as needed.__
-You probably need to move some files around.
-
-Please resist the temptation to move the code into a 'src/' directory.
- - `mypy` won't like that and complain the names don't match.
- - `uv` will fail to package the code properly.
-
-This is a sideeffect of using a namespace package. We must not create an
-`__init__.py` file in the top-level directory and that confuses some tools.
-
-### resync with an updated template
+### apply an updated template
 
 A script was provided to help with the update process. It assumes all answer
 files comply with naming scheme `.copier/answers_<templatename>.yaml`.
-This ensure we can compose multiple templates into a single repository.
+
+This allows us to compose multiple templates into a single repository.
 
 ```SHELL
+# update and post-update
+scripts/update_copier-templates --trust
+```
+
+or
+
+```SHELL
+# update
 scripts/update_copier-templates
+
+# post-update
+pre-commit install
+uv sync
 ```
 
 ## Bugs & Features
