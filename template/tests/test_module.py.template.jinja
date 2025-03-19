@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+#
+# copy this file whenever you need to create a new unittest
+#
+
+import unittest
+
+from {{ package_namespace }}.{{ package_name }} import do_magic
+
+
+# https://docs.python.org/3/library/unittest.html
+class TestExample(unittest.TestCase):
+
+    # use setUp()/tearDown() to avoid repetition
+
+    def setUp(self):
+        self.x = ...
+        self.y = ...
+
+    def tearDown(self):
+        ...
+
+    # regular tests:
+
+    def test_compare(self):
+        value1 = ...
+        value2 = ...
+        # -----------------------------------------------------------------
+        computed = do_magic(value1, value2)
+        expected = 2
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
+
+    def test_exception(self):
+        value1 = ...
+        value2 = ...
+        # -----------------------------------------------------------------
+        # -----------------------------------------------------------------
+        self.assertRaises(RuntimeError, do_magic, value1, value2)
+
+    # tests can be skipped:
+
+    @unittest.skipIf(1 == 2, "<message>")
+    def test_skip1(self):
+        ...
+
+    @unittest.skipUnless(1 == 2, "<message>")
+    def test_skip2(self):
+        ...
