@@ -53,7 +53,7 @@ repos:
   - repo: local
     hooks:
       - id: pylint
-        name: scan for broken code
+        name: pylint
         entry: uv run pylint
         language: system
         types:
@@ -66,6 +66,8 @@ repos:
           - "--score=n"
           - "--disable=C,W,R"
           - "--fail-under=10"
+          # do not try to validate the templates
+          - "--ignore=module.py.template,test_module.py.template"
   # -----------------------------------------------------------------------
   # stage: commit-msg
   # -----------------------------------------------------------------------
