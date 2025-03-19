@@ -22,11 +22,10 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           python-version-file: pyproject.toml
-      - name: install dependencies
-        run: |
-          uv sync
       # https://coverage.readthedocs.io/en/latest/
       - name: generate coverage report
+        env:
+          UV_NO_PROGRESS: true
         run: |
           uv run coverage run --source={{ package_namespace }}.{{ package_name }} -m pytest tests/
           # coveralls recognizes the presence of .coverage but claims there
