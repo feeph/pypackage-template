@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/feeph/pypackage-template/compare/v0.5.3...v0.6.0) (2025-03-19)
+
+
+### Features
+
+* provide a module and unittest template ([#35](https://github.com/feeph/pypackage-template/issues/35)) ([9a9b1e4](https://github.com/feeph/pypackage-template/commit/9a9b1e41b73f6f8aee71797c85199e0442a73a8c))
+
+
+### Documentation
+
+* update and improve README.md ([#37](https://github.com/feeph/pypackage-template/issues/37)) ([b0cda4c](https://github.com/feeph/pypackage-template/commit/b0cda4cd2bde866ce21a6e9db86d5f52273fe4af))
+
 ## [0.5.3](https://github.com/feeph/pypackage-template/compare/v0.5.2...v0.5.3) (2025-03-19)
 
 
