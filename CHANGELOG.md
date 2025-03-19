@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/feeph/pypackage-template/compare/v0.5.1...v0.5.2) (2025-03-19)
+
+
+### Bug Fixes
+
+* copier must not be run with `uv run ...` ([#31](https://github.com/feeph/pypackage-template/issues/31)) ([7d21947](https://github.com/feeph/pypackage-template/commit/7d219470148aad1f869e30c9203d127c98502087))
+
 ## [0.5.1](https://github.com/feeph/pypackage-template/compare/v0.5.0...v0.5.1) (2025-03-19)
 
 
