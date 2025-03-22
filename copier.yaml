@@ -26,6 +26,7 @@ _exclude:
   - "{% if _copier_operation == 'update' -%}.release-please-manifest.json{% endif %}"
   - "{% if _copier_operation == 'update' -%}cspell.config.yaml{% endif %}"
   - "{% if _copier_operation == 'update' -%}pyproject.toml{% endif %}"
+  - "{% if _copier_operation == 'update' -%}uv.lock{% endif %}"
 
 _message_after_copy: |
   ----------------------------------------------------------------------------
