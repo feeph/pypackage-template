@@ -47,7 +47,6 @@ _subdirectory: template
 _tasks:
   - command: if [ ! -e .git ] ; then git init ; fi
   - command: pre-commit install
-  - command: uv sync --no-progress
 
 # template variables
 
